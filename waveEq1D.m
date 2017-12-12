@@ -11,10 +11,10 @@ if sim_flag == 'l'
     amp = 1;
 elseif sim_flag == 's'
     % Sound source
-    c = 343;  % speed of sound in air [m/s]
-    cw = 1498;  % speed of sound in water [m/s]
-    f0 = 10000;  % freq. of source [Hz]
-    amp = 0.2;
+    c = 1498;  % speed of sound in water [m/s]
+    cw = 343;  % speed of sound in air [m/s]
+    f0 = 20000;  % freq. of source [Hz]
+    amp = 1;
 else
     % Display error message 
     error('You entered an invalid input.')
