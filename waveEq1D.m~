@@ -1,22 +1,22 @@
 %% Solution to 1D wave equation
 
 disp('Do you want to simulate a light or a sound pulse?'); 
-sim_flag = input('Enter l for light or s for sound): ', 's');
+sim_flag = input('Enter l for light and s for sound): ', 's');
 
-imax = 800;  % total number of spatial grid points
+imax = 500;  % total number of spatial grid points
 if sim_flag == 'l'
     % Light source
     c = 3e8;  % speed of light in air [m/s]
     cw = c / 2;  % speed of light in water [m/s]
-    f0 = 8e9;  % freq. of source [Hz]
+    f0 = 6e9;  % freq. of source [Hz]
     amp = 1;
     ibd = imax / 2;
 elseif sim_flag == 's'
     % Sound source
-    c = 343;  % speed of sound in water [m/s]
-    cw = 1498;  % speed of sound in air [m/s]
-    f0 = 10000;  % freq. of source [Hz]
-    amp = 0.4;
+    c = 1498;  % speed of sound in water [m/s]
+    cw = 343;  % speed of sound in air [m/s]
+    f0 = 20000;  % freq. of source [Hz]
+    amp = 1;
     ibd = imax / 4;
 else
     % Display error message 
@@ -29,7 +29,7 @@ dx = lambda0 / 20;  % space grid step
 dt = dx / max(c, cw);  % time grid step
 nmax = round(0.5 * (imax * dx) / min(c, cw) / dt);
 w = 2 * pi * f0;  % angular frequency
-tau = nmax * dt / 10;  % half width of source [s]
+tau = nmax * dt / 50;  % half width of source [s]
 t0 = 3 * tau;  % time delay at source [s]
 s1 = c * dt / dx;  % update coeff. for left half space
 s2 = cw * dt / dx;  % update coeff. for right half space
@@ -48,30 +48,30 @@ for n = 2 : nmax - 1
     u(n, imax) = 0;
     
     % Space update for loop
-%     for i = 2 : imax - 1
-%         
-%         if i < ibd
-%             u(n + 1, i) = s1^2 * (u(n, i + 1) ...
-%                           - (2 * u(n, i)) + u(n, i - 1)) ...
-%                           + (2 * u(n, i)) - u(n - 1, i);
-%         else
-%             u(n + 1, i) = s2^2 * (u(n, i + 1) ...
-%                           - (2 * u(n, i)) + u(n, i - 1)) ...
-%                           + (2 * u(n, i)) - u(n - 1, i);
-%         end
-%         
-%     end
+    for i = 2 : imax - 1
+        
+        if i < ibd
+            u(n + 1, i) = s1^2 * (u(n, i + 1) ...
+                          - (2 * u(n, i)) + u(n, i - 1)) ...
+                          + (2 * u(n, i)) - u(n - 1, i);
+        else
+            u(n + 1, i) = s2^2 * (u(n, i + 1) ...
+                          - (2 * u(n, i)) + u(n, i - 1)) ...
+                          + (2 * u(n, i)) - u(n - 1, i);
+        end
+        
+    end
     % Space update without for loop (faster)
-    u(n+1, 2 : ibd) = s1^2 * (u(n, 3 : ibd + 1) - ...
-                         (2 * u(n, 2 : ibd)) + ...
-                         u(n, 1 : ibd - 1))...
-                         + (2 * u(n, 2 : ibd)) ...
-                         - u(n-1, 2 : ibd);
-    u(n+1, ibd + 1 : imax - 1) = s2^2 * (u(n, ibd + 2 : imax) - ...
-                         (2 * u(n, ibd + 1 : imax - 1)) + ...
-                         u(n, ibd : imax - 2))...
-                         + (2 * u(n, ibd + 1 : imax - 1)) ...
-                         - u(n-1, ibd + 1 : imax - 1);
+%     u(n+1, 2 : ibd) = s1^2 * (u(n, 3 : ibd + 1) - ...
+%                          (2 * u(n, 2 : ibd)) + ...
+%                          u(n, 1 : i - 1))...
+%                          + (2 * u(n, 2 : im)) ...
+%                          - u(n-1, 2 : im);
+%     u(n+1, im + 1 : imax - 1) = s2^2 * (u(n, im + 2 : imax) - ...
+%                          (2 * u(n, im + 1 : imax - 1)) + ...
+%                          u(n, im : imax - 2))...
+%                          + (2 * u(n, im + 1 : imax - 1)) ...
+%                          - u(n-1, im + 1 : imax - 1);
     
     % Plotting results
     plot(u(n + 1, 1:imax))
