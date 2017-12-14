@@ -88,6 +88,8 @@ for n = 2 : nmax - 1
 end
 
 figure();
-imagesc(u');
+im = imagesc(u');
+im.AlphaData = 0.7;
+colormap('jet')
 xlabel('time'), ylabel('space');
 axis image;
