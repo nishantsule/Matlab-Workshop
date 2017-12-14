@@ -1,5 +1,6 @@
 %% Solution to 1D wave equation
 
+close all
 disp('Do you want to simulate a light or a sound pulse?'); 
 sim_flag = input('Enter l for light or s for sound): ', 's');
 
@@ -76,11 +77,17 @@ for n = 2 : nmax - 1
     % Plotting results
     plot(u(n + 1, 1:imax))
     hold on
-    plot([ibd, ibd], [-1, 1], '--k')
+    plot([ibd, ibd], [-1, 1], '--k');
     hold off
-    axis([1, imax, -1, 1])
-    xlabel('x'), ylabel('u')
-    T = ['Time step = ', num2str(n + 1), ' of ', num2str(nmax)];
+    axis([1, imax, -1, 1]);
+    xlabel('x'), ylabel('u');
+    T = ['Air                        ','Time step = ', num2str(n + 1), ...
+        ' of ', num2str(nmax), '                                  Water'];
     title(T);
-    pause(0.01)
+    pause(0.01);
 end
+
+figure();
+imagesc(u');
+xlabel('time'), ylabel('space');
+axis image;
