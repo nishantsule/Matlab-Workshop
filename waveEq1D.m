@@ -1,4 +1,4 @@
-%% Solution to 1D wave equation
+%%%% Solution to 1D wave equation
 
 close all  % close all existing figure windows
 
