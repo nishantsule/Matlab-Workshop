@@ -1,6 +1,7 @@
 %% Solution to 1D wave equation
 
-close all
+close all  % close all existing figure windows
+
 disp('Do you want to simulate a light or a sound pulse?'); 
 sim_flag = input('Enter l for light or s for sound): ', 's');
 
@@ -8,17 +9,17 @@ imax = 800;  % total number of spatial grid points
 if sim_flag == 'l'
     % Light source
     c = 3e8;  % speed of light in air [m/s]
-    cw = c / 2;  % speed of light in water [m/s]
+    cw = c / 1.33;  % speed of light in water [m/s]
     f0 = 8e9;  % freq. of source [Hz]
-    amp = 1;
-    ibd = imax / 2;
+    amp = 0.8;  % source amplitude
+    ibd = round(imax / 3.5);  % location of material boundary
 elseif sim_flag == 's'
     % Sound source
     c = 343;  % speed of sound in water [m/s]
     cw = 1498;  % speed of sound in air [m/s]
     f0 = 10000;  % freq. of source [Hz]
-    amp = 0.4;
-    ibd = imax / 4;
+    amp = 0.4;  % source amplitude
+    ibd = round(imax / 4);  % location of material boundary
 else
     % Display error message 
     error('You entered an invalid input.')
@@ -28,7 +29,7 @@ end
 lambda0 = min(c, cw) / f0;  % wavelength of source wave [m]
 dx = lambda0 / 20;  % space grid step
 dt = dx / max(c, cw);  % time grid step
-nmax = round(0.5 * (imax * dx) / min(c, cw) / dt);
+nmax = round(0.5 * (imax * dx) / min(c, cw) / dt);  % number of time steps
 w = 2 * pi * f0;  % angular frequency
 tau = nmax * dt / 10;  % half width of source [s]
 t0 = 3 * tau;  % time delay at source [s]
