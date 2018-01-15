@@ -1,0 +1,45 @@
+S1:
+
+imax = 800;  % total number of spatial grid points
+% Light source
+    c = 3e8;  % speed of light in air [m/s]
+    cw = c / 1.33;  % speed of light in water [m/s]
+    f0 = 8e9;  % freq. of source [Hz]
+    amp = 0.8;  % source amplitude
+    ibd = round(imax / 3.5);  % location of material boundary
+    
+% Sound source
+    c = 343;  % speed of sound in water [m/s]
+    cw = 1498;  % speed of sound in air [m/s]
+    f0 = 10000;  % freq. of source [Hz]
+    amp = 0.4;  % source amplitude
+    ibd = round(imax / 4);  % location of material boundary
+% Display error message 
+    error('You entered an invalid input.')
+
+S2:
+
+% FD parameters
+lambda0 = min(c, cw) / f0;  % wavelength of source wave [m]
+dx = lambda0 / 20;  % space grid step
+dt = dx / max(c, cw);  % time grid step
+nmax = round(0.5 * (imax * dx) / min(c, cw) / dt);  % number of time steps
+w = 2 * pi * f0;  % angular frequency
+tau = nmax * dt / 10;  % half width of source [s]
+t0 = 3 * tau;  % time delay at source [s]
+s1 = c * dt / dx;  % update coeff. for left half space
+s2 = cw * dt / dx;  % update coeff. for right half space
+
+S3:
+
+% Plotting results
+    plot(u(n + 1, 1:imax))
+    hold on
+    plot([ibd, ibd], [-1, 1], '--k');
+    hold off
+    axis([1, imax, -1, 1]);
+    xlabel('x'), ylabel('u');
+    T = ['Air                        ','Time step = ', num2str(n + 1), ...
+        ' of ', num2str(nmax), '                                  Water'];
+    title(T);
+    pause(0.01);
